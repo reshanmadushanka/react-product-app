@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('2fa', [AuthController::class, 'validate2FA']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();

@@ -3,9 +3,6 @@
 namespace App\Services;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Auth as FirebaseAuth;
-use Kreait\Firebase\Exception\Auth\FailedToVerifyPhoneNumber;
-use Kreait\Firebase\Exception\Auth\PhoneNumberVerificationFailed;
 
 class FirebaseService
 {
@@ -16,7 +13,13 @@ class FirebaseService
         $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
         $this->auth = $factory->createAuth();
     }
-
+    
+    /**
+     * verify2FA
+     *
+     * @param  mixed $idToken
+     * @return void
+     */
     public function verify2FA($idToken)
     {
         try {

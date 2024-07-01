@@ -36,6 +36,7 @@ class AuthControllerTest extends TestCase
         $userData = [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '0982345566',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];

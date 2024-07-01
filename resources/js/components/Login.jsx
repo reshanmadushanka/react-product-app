@@ -7,9 +7,7 @@ import Swal from "sweetalert2";
 const Login = () => {
     const [verificationCode, setVerificationCode] = useState("");
     const [confirmationResult, setConfirmationResult] = useState(null);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
-
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -26,44 +24,47 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("/api/login", formData);
-            //   const phoneNumber = `+94${response.data.user.phone}`;
+            const phoneNumber = `+94${response.data.user.phone}`;
 
-            //   const recaptchaVerifier = new RecaptchaVerifier(
-            //     auth,
-            //     "recaptcha-container",
-            //     { size: "normal" }
-            //   );
+            const recaptchaVerifier = new RecaptchaVerifier(
+                auth,
+                "recaptcha-container",
+                { size: "normal" }
+            );
 
-            //   const confirmationResult = await signInWithPhoneNumber(
-            //     auth,
-            //     phoneNumber,
-            //     recaptchaVerifier
-            //   );
-            //   setConfirmationResult(confirmationResult);
+            const confirmationResult = await signInWithPhoneNumber(
+                auth,
+                phoneNumber,
+                recaptchaVerifier
+            );
+            setConfirmationResult(confirmationResult);
 
             // Handle user input for OTP
-            //   const code = prompt("Enter OTP sent to your phone");
-            //   setVerificationCode(code);
+            const code = prompt("Enter OTP sent to your phone");
+            setVerificationCode(code);
 
-            //   const result = await confirmationResult.confirm(code);
-            //   const idToken = await result.user.getIdToken();
+            const result = await confirmationResult.confirm(code);
+            const idToken = await result.user.getIdToken();
 
-            //   const verifyResponse = await axios.post(`/api/2fa`, { idToken });
-            //   if (verifyResponse.data.message === "2FA verified") {
-            const token = response.data.token;
-            localStorage.setItem("token", token);
-            // localStorage.setItem("user", JSON.stringify(response.data.user));
-            Swal.fire({
-                icon: "success",
-                title: "Login Successful",
-                text: "Welcome back!",
-            }).then(() => {
-                navigate("/dashboard");
-            });
-            //     navigate("/dashboard");
-            //   } else {
-            //     console.error("2FA verification failed");
-            //   }
+            const verifyResponse = await axios.post(`/api/2fa`, { idToken });
+            if (verifyResponse.data.message === "2FA verified") {
+                const token = response.data.token;
+                localStorage.setItem("token", token);
+                // localStorage.setItem("user", JSON.stringify(response.data.user));
+                Swal.fire({
+                    icon: "success",
+                    title: "Login Successful",
+                    text: "Welcome back!",
+                }).then(() => {
+                    navigate("/dashboard");
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Login Failed",
+                    text: "2FA verification failed",
+                });
+            }
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 Swal.fire({

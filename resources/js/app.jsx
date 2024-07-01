@@ -4,7 +4,7 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-import './bootstrap';
+import "./bootstrap";
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -13,8 +13,14 @@ import './bootstrap';
  */
 
 import "../css/app.css";
-
-import ReactDOM from "react-dom/client";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { createRoot } from "react-dom/client";
 import App from "./components/App";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+const root = createRoot(document.getElementById("app"));
+root.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+);

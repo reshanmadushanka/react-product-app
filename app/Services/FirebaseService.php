@@ -10,7 +10,7 @@ class FirebaseService
 
     public function __construct()
     {
-        $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+        $factory = (new Factory)->withServiceAccount('/var/www/html/react-product-app/firebase_credentials.json');
         $this->auth = $factory->createAuth();
     }
     

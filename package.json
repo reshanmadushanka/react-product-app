@@ -6,8 +6,19 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "axios": "^1.6.4",
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-react": "^4.3.1",
+        "axios": "^1.7.2",
+        "bootstrap": "^5.3.3",
         "laravel-vite-plugin": "^1.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "sass": "^1.56.1",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "firebase": "^10.12.2",
+        "react-router-dom": "^6.24.0",
+        "sweetalert2": "^11.12.1"
     }
 }

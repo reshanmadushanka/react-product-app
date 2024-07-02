@@ -24,30 +24,30 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("/api/login", formData);
-            const phoneNumber = `+94${response.data.user.phone}`;
+            // const phoneNumber = `+94${response.data.user.phone}`;
 
-            const recaptchaVerifier = new RecaptchaVerifier(
-                auth,
-                "recaptcha-container",
-                { size: "normal" }
-            );
+            // const recaptchaVerifier = new RecaptchaVerifier(
+            //     auth,
+            //     "recaptcha-container",
+            //     { size: "normal" }
+            // );
 
-            const confirmationResult = await signInWithPhoneNumber(
-                auth,
-                phoneNumber,
-                recaptchaVerifier
-            );
-            setConfirmationResult(confirmationResult);
+            // const confirmationResult = await signInWithPhoneNumber(
+            //     auth,
+            //     phoneNumber,
+            //     recaptchaVerifier
+            // );
+            // setConfirmationResult(confirmationResult);
 
-            // Handle user input for OTP
-            const code = prompt("Enter OTP sent to your phone");
-            setVerificationCode(code);
+            // // Handle user input for OTP
+            // const code = prompt("Enter OTP sent to your phone");
+            // setVerificationCode(code);
 
-            const result = await confirmationResult.confirm(code);
-            const idToken = await result.user.getIdToken();
+            // const result = await confirmationResult.confirm(code);
+            // const idToken = await result.user.getIdToken();
 
-            const verifyResponse = await axios.post(`/api/2fa`, { idToken });
-            if (verifyResponse.data.message === "2FA verified") {
+            // const verifyResponse = await axios.post(`/api/2fa`, { idToken });
+            // if (verifyResponse.data.message === "2FA verified") {
                 const token = response.data.token;
                 localStorage.setItem("token", token);
                 // localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -58,13 +58,13 @@ const Login = () => {
                 }).then(() => {
                     navigate("/dashboard");
                 });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Login Failed",
-                    text: "2FA verification failed",
-                });
-            }
+            // } else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Login Failed",
+            //         text: "2FA verification failed",
+            //     });
+            // }
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 Swal.fire({
@@ -89,7 +89,7 @@ const Login = () => {
     };
 
     return (
-        <section className="vh-100 bg-image">
+        <section className="App">
             <div className="mask d-flex align-items-center h-100 gradient-custom-3">
                 <div className="container h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">

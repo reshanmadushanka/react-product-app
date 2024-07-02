@@ -24,47 +24,59 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("/api/login", formData);
-            // const phoneNumber = `+94${response.data.user.phone}`;
+            const phoneNumber = `+94${response.data.user.phone}`;
 
-            // const recaptchaVerifier = new RecaptchaVerifier(
-            //     auth,
-            //     "recaptcha-container",
-            //     { size: "normal" }
-            // );
+            const recaptchaVerifier = new RecaptchaVerifier(
+                auth,
+                "recaptcha-container",
+                { size: "normal" }
+            );
 
-            // const confirmationResult = await signInWithPhoneNumber(
-            //     auth,
-            //     phoneNumber,
-            //     recaptchaVerifier
-            // );
-            // setConfirmationResult(confirmationResult);
+            const confirmationResult = await signInWithPhoneNumber(
+                auth,
+                phoneNumber,
+                recaptchaVerifier
+            );
+            setConfirmationResult(confirmationResult);
 
-            // // Handle user input for OTP
-            // const code = prompt("Enter OTP sent to your phone");
-            // setVerificationCode(code);
+            // Handle user input for OTP
+            const { value: code } = await Swal.fire({
+                title: "Enter OTP",
+                input: "text",
+                inputLabel: "OTP",
+                inputPlaceholder: "Enter OTP sent to your phone",
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "You need to enter the OTP!";
+                    }
+                },
+            });
+            if (code) {
+                setVerificationCode(code);
+                const result = await confirmationResult.confirm(code);
+                const idToken = await result.user.getIdToken();
 
-            // const result = await confirmationResult.confirm(code);
-            // const idToken = await result.user.getIdToken();
-
-            // const verifyResponse = await axios.post(`/api/2fa`, { idToken });
-            // if (verifyResponse.data.message === "2FA verified") {
-                const token = response.data.token;
-                localStorage.setItem("token", token);
-                // localStorage.setItem("user", JSON.stringify(response.data.user));
-                Swal.fire({
-                    icon: "success",
-                    title: "Login Successful",
-                    text: "Welcome back!",
-                }).then(() => {
-                    navigate("/dashboard");
+                const verifyResponse = await axios.post(`/api/2fa`, {
+                    idToken,
                 });
-            // } else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Login Failed",
-            //         text: "2FA verification failed",
-            //     });
-            // }
+                if (verifyResponse.data.message === "2FA verified") {
+                    const token = response.data.token;
+                    localStorage.setItem("token", token);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Login Successful",
+                        text: "Welcome back!",
+                    }).then(() => {
+                        navigate("/dashboard");
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Login Failed",
+                        text: "2FA verification failed",
+                    });
+                }
+            }
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 Swal.fire({
@@ -108,12 +120,14 @@ const Login = () => {
                                                 type="email"
                                                 name="email"
                                                 placeholder="Email"
+                                                className="form-control form-control"
                                                 onChange={handleChange}
                                                 required
                                             />
                                         </div>
                                         <div className="form-outline mb-4">
                                             <input
+                                                className="form-control form-control"
                                                 type="password"
                                                 name="password"
                                                 placeholder="Password"
@@ -121,14 +135,17 @@ const Login = () => {
                                                 required
                                             />
                                         </div>
+                                        <div
+                                            id="recaptcha-container"
+                                            className="mb-4"
+                                        ></div>
                                         <button
                                             type="submit"
-                                            className="btn btn-primary mt-4"
+                                            className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
                                         >
                                             Submit
                                         </button>
                                     </form>
-                                    <div id="recaptcha-container"></div>
                                     <p className="text-center text-muted mt-5 mb-0">
                                         Not an account?{" "}
                                         <Link to="/register" className="link">

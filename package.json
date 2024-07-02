@@ -18,7 +18,9 @@
     },
     "dependencies": {
         "firebase": "^10.12.2",
+        "formik": "^2.4.6",
         "react-router-dom": "^6.24.0",
-        "sweetalert2": "^11.12.1"
+        "sweetalert2": "^11.12.1",
+        "yup": "^1.4.0"
     }
 }

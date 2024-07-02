@@ -1,66 +1,169 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel React Firebase 2FA Web Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+This project is a web application that incorporates user authentication with Firebase 2-Factor Authentication (2FA), a Laravel backend for handling API requests, and a React frontend for the user interface. The application features user registration, login, and a dashboard displaying the user's name and a list of products with CRUD functionalities.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- User registration with email, password, and phone number for 2FA.
+- User login with email, password, and 2FA.
+- Secure authentication using Laravel Passport.
+- Dashboard displaying logged-in user's name and a list of products.
+- CRUD operations for products.
+- Responsive design.
+- Clean and consistent UI/UX.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technologies Used
 
-## Learning Laravel
+- Laravel 11
+- React
+- Firebase
+- Laravel Passport
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Prerequisites
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 8.3
+- Composer
+- Node.js
+- NPM/Yarn
+- Firebase account
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+### Backend (Laravel)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository**
+    ```bash
+    git clone https://github.com/reshanmadushanka/react-product-app
+    cd react-product-app
+    ```
 
-### Premium Partners
+2. **Install dependencies**
+    ```bash
+    composer install
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. **Set up environment variables**
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-## Contributing
+    Configure your `.env` file with your database and Firebase credentials.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Run migrations**
+    ```bash
+    php artisan migrate
+    ```
 
-## Code of Conduct
+5. **Install Passport**
+    ```bash
+    php artisan passport:install
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Run the development server**
+    ```bash
+    php artisan serve
+    ```
 
-## Security Vulnerabilities
+### Frontend (React)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Navigate to the React directory**
+    ```bash
+    cd resources/js
+    ```
+
+2. **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3. **Run the React development server**
+    ```bash
+    npm run dev
+    # or
+    yarn run dev
+    ```
+
+## Firebase Configuration
+
+1. **Go to the Firebase Console**
+    - Create a new project.
+    - Enable Authentication and set up sign-in methods for Email/Password and Phone.
+
+2. **Get Firebase Configuration**
+    - Go to Project Settings.
+    - Copy the Firebase SDK snippet (config object).
+    - Set path FIREBASE_CREDENTIALS in env 
+
+3. **Add Firebase Config to your project**
+    - Create a file `firebase.js` in the `resources/js` directory and add the Firebase configuration.
+
+    ```javascript
+    // firebaseConfig.js
+    import firebase from 'firebase/app';
+    import 'firebase/auth';
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID",
+      measurementId: "YOUR_MEASUREMENT_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    export const auth = firebase.auth();
+    ```
+
+## API Endpoints
+
+### User Registration
+
+- **Endpoint:** `/api/register`
+- **Method:** POST
+- **Body Parameters:**
+  - `name`: string
+  - `email`: string
+  - `password`: string
+  - `phone`: string
+
+### User Login
+
+- **Endpoint:** `/api/login`
+- **Method:** POST
+- **Body Parameters:**
+  - `email`: string
+  - `password`: string
+
+### 2FA Validation
+
+- **Endpoint:** `/api/2fa-validate`
+- **Method:** POST
+- **Body Parameters:**
+  - `token`: string
+
+### Product CRUD
+
+- **Endpoint:** `/api/products`
+- **Method:** GET, POST, PUT, DELETE
+- **Body Parameters:**
+  - `name`: string (for POST and PUT)
+  - `description`: string (for POST and PUT)
+  - `price`: float (for POST and PUT)
+
+## Usage
+
+1. **Register a new user** through the registration page.
+2. **Login** with the registered credentials and complete 2FA.
+3. **Access the dashboard** to view, add, edit, and delete products.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
